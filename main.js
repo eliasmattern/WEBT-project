@@ -1,6 +1,29 @@
+
+const valid_moods = [
+    "stressed",
+    "sad",
+    "angry",
+    "drained",
+    "overwhelmed",
+    "lonely",
+    "indifferent",
+    "content",
+    "peaceful",
+    "happy",
+    "joyful",
+    "grateful",
+    "calm",
+    "energized",
+    "excited",
+    "amazed"
+];
+
 document.getElementById('moodForm').addEventListener('submit', (event) => {
     event.preventDefault();
-    const [mood, details, date] = getInputs();
+    const mood_object = getInputs();
+    const mood = mood_object.mood
+    const details = mood_object.details
+    const date = mood_object.date
     document.getElementById('error-container').classList.add("w3-hide");
 
     if (validate_inputs(mood, details, date)) {
@@ -11,13 +34,16 @@ document.getElementById('moodForm').addEventListener('submit', (event) => {
 });
 
 document.getElementById('moodForm').addEventListener('input', () => {
-    const [mood, details, date] = getInputs()
+    const mood_object = getInputs();
+    const mood = mood_object.mood
+    const details = mood_object.details
+    const date = mood_object.date
 
     document.getElementById('submit-button').disabled  = !validate_inputs(mood, details, date);
 });
 
 function validate_inputs(mood, details, date) {
-    return mood.length > 1 && isValidDateFormat(date) && typeof details == 'string'
+    return valid_moods.includes(mood) && isValidDateFormat(date) && typeof details == 'string' && details.length < 500
 
 }
 
@@ -45,35 +71,39 @@ function getInputs() {
     const details = document.getElementById('details').value;
     const date = document.getElementById('date').value;
 
-    return [mood, details, date]
+    return {mood, details, date}
 }
 
 function displayErrors(mood, details, date) {
     let moodError = ''
     let detailsError = ''
     let dateError = ''
-    if (mood.length < 1) {
-        moodError = "<p>moodError</p>"
+    if (!valid_moods.includes(mood)) {
+        moodError = `<p>${mood} is not a valid mood</p>`
     }
 
     if (!typeof details == 'string') {
-        detailsError = "<p>details error</p>"
+        detailsError = "<p>Details must be text</p>"
+    }
+    if (!typeof details.length > 500) {
+        detailsError = "<p>Details can not be longer than 500 characters</p>"
     }
     if (!isValidDateFormat(date)) {
-        dateError = "<p>date Error</p>"
+        dateError = "<p>Date must be in the format YYYY-MM-DD.</p>"
     }
 
-    document.getElementById('error-container').innerHTML = `${moodError}<br>${detailsError}<br>${dateError}`;
+    document.getElementById('error-container').innerHTML = `${moodError}${detailsError}${dateError}`;
     document.getElementById('error-container').classList.remove("w3-hide");
 
 }
 
 function saveMood(mood, details, date) {
+
     let xhr = new XMLHttpRequest();
     xhr.onerror = () => {
         let error = parseJsonHelper(xhr.responseText)
-        let output = document.getElementById('output');
-        output.innerText = error;
+        let errorContainer = document.getElementById('error-container');
+        errorContainer.innerText = error;
         };
     xhr.ontimeout = undefined;
     xhr.onload = () => {
@@ -81,9 +111,9 @@ function saveMood(mood, details, date) {
         if (xhr.status == 200) {
             console.log(response);
         } else {
-            let output = document.getElementById('output');
+            let output = document.getElementById('error-container');
+            document.getElementById('error-container').classList.remove("w3-hide");
             output.innerText = response.errors;
-
         }
     };
 

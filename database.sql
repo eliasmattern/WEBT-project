@@ -7,7 +7,7 @@ CREATE TABLE moods (
     mood ENUM('stressed', 'sad', 'angry', 'drained', 'overwhelmed', 'lonely',
               'indifferent', 'content', 'peaceful',
               'happy', 'joyful', 'grateful', 'calm', 'energized', 'excited', 'amazed') NOT NULL,
-    description VARCHAR(500) NULL,
+    details VARCHAR(500) NULL,
     mood_category ENUM('Unpleasant Mood', 'Neutral Mood', 'Positive Mood') NOT NULL,
     date DATE NOT NULL
 );

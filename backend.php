@@ -25,6 +25,19 @@ $positive_moods = [
     "amazed"
 ];
 
+function getDbConnection()
+{
+    $conn = mysqli_connect("localhost", "root", "", "MoodTracker");
+    if (!$conn) {
+        echo json_encode([
+            "success" => false,
+            "error" => "Failed to connect to database",
+        ]);
+        exit;
+    }
+    return $conn;
+}
+
 $body = file_get_contents("php://input");
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -55,7 +68,7 @@ if ($method == 'POST') {
             $errors .= "Details must be a string or empty.\n";
         }
 
-        if (!strlen($details) <= 500) {
+        if (!strlen($details) > 500) {
             $errors .= "Details can not be longer than 500 characters.\n";
         }
 
@@ -65,15 +78,36 @@ if ($method == 'POST') {
             exit;
         }
 
-        echo json_encode([
-            "success" => true,
-            "mood" => $mood,
-            "details" => $details,
-            "date" => $date
-        ]);
+        if (in_array($mood, $unpleasant_moods)) {
+            $mood_category = "unpleasant_mood";
+        } elseif (in_array($mood, $neutral_moods)) {
+            $mood_category = "neutral_mood";
+        } else {
+            $mood_category = "positive_mood";
+        }
+
+        $conn = getDbConnection();
+
+        $stmt = $conn->prepare("INSERT INTO moods (mood, details, mood_category, date) VALUES (?, ?, ?, ?)");
+
+        $stmt->bind_param("ssss", $mood, $details, $mood_category, $date);
+
+        if ($stmt->execute()) {
+            echo json_encode([
+                "success" => true,
+                "mood" => $mood,
+                "details" => $details,
+                "date" => $date
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "error" => "Failed to save moood",
+            ]);
+        }
     } else {
         http_response_code(400);
-        echo json_encode(["error" => "Invalid input. 'mood' and 'date' are required."]);
+        echo json_encode(["success" => false, "error" => "Invalid input. 'mood' and 'date' are required."]);
     }
 } else {
     header("Location: /");

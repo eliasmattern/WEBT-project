@@ -29,6 +29,7 @@ function getDbConnection()
 {
     $conn = mysqli_connect("localhost", "root", "", "MoodTracker");
     if (!$conn) {
+        http_response_code(500);
         echo json_encode([
             "success" => false,
             "error" => "Failed to connect to database",
@@ -68,7 +69,7 @@ if ($method == 'POST') {
             $errors .= "Details must be a string or empty.\n";
         }
 
-        if (!strlen($details) > 500) {
+        if (strlen($details) > 500) {
             $errors .= "Details can not be longer than 500 characters.\n";
         }
 
@@ -100,14 +101,52 @@ if ($method == 'POST') {
                 "date" => $date
             ]);
         } else {
+            http_response_code(500);
             echo json_encode([
                 "success" => false,
-                "error" => "Failed to save moood",
+                "error" => "Failed to save mood",
             ]);
         }
     } else {
         http_response_code(400);
         echo json_encode(["success" => false, "error" => "Invalid input. 'mood' and 'date' are required."]);
+    }
+} elseif ($method == 'GET') {
+    $conn = getDbConnection();
+
+    if (isset($_GET['mood_category'])) {
+        $mood_category = $_GET['mood_category'];
+        $valid_categories = ['unpleasant_mood', 'neutral_mood', 'positive_mood'];
+
+        if (in_array($mood_category, $valid_categories)) {
+            // Select moods with this category
+            $stmt = $conn->prepare("SELECT * FROM moods WHERE mood_category = ?");
+            $stmt->bind_param("s", $mood_category);
+        } else {
+            // Invalid category
+            http_response_code(400);
+            echo json_encode(["success" => false, "error" => "Category not found"]);
+            exit;
+        }
+    } else {
+        // No mood_category specified, select all moods
+        $stmt = $conn->prepare("SELECT * FROM moods");
+    }
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $moods = $result->fetch_all(MYSQLI_ASSOC);
+
+        echo json_encode([
+            "success" => true,
+            "moods" => $moods
+        ]);
+    } else {
+        http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "error" => "Failed to retrieve moods",
+        ]);
     }
 } else {
     header("Location: /");

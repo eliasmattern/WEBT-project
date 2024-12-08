@@ -119,17 +119,14 @@ if ($method == 'POST') {
         $valid_categories = ['unpleasant_mood', 'neutral_mood', 'positive_mood'];
 
         if (in_array($mood_category, $valid_categories)) {
-            // Select moods with this category
             $stmt = $conn->prepare("SELECT * FROM moods WHERE mood_category = ?");
             $stmt->bind_param("s", $mood_category);
         } else {
-            // Invalid category
             http_response_code(400);
             echo json_encode(["success" => false, "error" => "Category not found"]);
             exit;
         }
     } else {
-        // No mood_category specified, select all moods
         $stmt = $conn->prepare("SELECT * FROM moods");
     }
 

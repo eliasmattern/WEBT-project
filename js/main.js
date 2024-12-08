@@ -43,8 +43,11 @@ document.getElementById('moodForm').addEventListener('input', () => {
 });
 
 function validate_inputs(mood, details, date) {
-    return valid_moods.includes(mood) && isValidDateFormat(date) && typeof details == 'string' && details.length < 500
-
+    return valid_moods.includes(mood) &&
+       isValidDateFormat(date) &&
+       typeof details === 'string' &&
+       details.length < 500 &&
+       new Date(date) <= new Date();
 }
 
 function isValidDateFormat(dateString) {
@@ -75,27 +78,30 @@ function getInputs() {
 }
 
 function displayErrors(mood, details, date) {
-    let moodError = ''
-    let detailsError = ''
-    let dateError = ''
+    let moodError = '';
+    let detailsError = '';
+    let dateError = '';
+
     if (!valid_moods.includes(mood)) {
-        moodError = `<p>${mood} is not a valid mood</p>`
+        moodError = `<p>${mood} is not a valid mood.</p>`;
     }
 
-    if (!typeof details == 'string') {
-        detailsError = "<p>Details must be text</p>"
+    if (typeof details !== 'string') {
+        detailsError = "<p>Details must be text.</p>";
+    } else if (details.length > 500) {
+        detailsError = "<p>Details cannot be longer than 500 characters.</p>";
     }
-    if (!typeof details.length > 500) {
-        detailsError = "<p>Details can not be longer than 500 characters</p>"
-    }
+
     if (!isValidDateFormat(date)) {
-        dateError = "<p>Date must be in the format YYYY-MM-DD.</p>"
+        dateError = "<p>Date must be in the format YYYY-MM-DD.</p>";
+    } else if (new Date(date) > new Date()) {
+        dateError = "<p>Date cannot be in the future.</p>";
     }
 
     document.getElementById('error-container').innerHTML = `${moodError}${detailsError}${dateError}`;
     document.getElementById('error-container').classList.remove("w3-hide");
-
 }
+
 
 function saveMood(mood, details, date) {
 

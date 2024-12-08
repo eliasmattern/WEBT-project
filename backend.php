@@ -63,6 +63,13 @@ if ($method == 'POST') {
 
         if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $date)) {
             $errors .= "Date must be in the format YYYY-MM-DD.\n";
+        } else {
+            $current_date = new DateTime();
+            $provided_date = DateTime::createFromFormat('Y-m-d', $date);
+        
+            if ($provided_date > $current_date) {
+                $errors .= "Date cannot be in the future.\n";
+            }
         }
 
         if (!is_string($details)) {

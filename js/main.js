@@ -1,4 +1,3 @@
-
 const valid_moods = [
     "stressed",
     "sad",
@@ -18,29 +17,13 @@ const valid_moods = [
     "amazed"
 ];
 
-document.getElementById('moodForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const mood_object = getInputs();
-    const mood = mood_object.mood
-    const details = mood_object.details
-    const date = mood_object.date
-    document.getElementById('error-container').classList.add("w3-hide");
+function getInputs() {
+    const mood = document.getElementById('mood').value;
+    const details = document.getElementById('details').value;
+    const date = document.getElementById('date').value;
 
-    if (validate_inputs(mood, details, date)) {
-        saveMood(mood, details, date);
-    } else {
-        displayErrors(mood, details, date);
-    }
-});
-
-document.getElementById('moodForm').addEventListener('input', () => {
-    const mood_object = getInputs();
-    const mood = mood_object.mood
-    const details = mood_object.details
-    const date = mood_object.date
-
-    document.getElementById('submit-button').disabled = !validate_inputs(mood, details, date);
-});
+    return { mood, details, date };
+}
 
 function validate_inputs(mood, details, date) {
     return valid_moods.includes(mood) &&
@@ -51,7 +34,6 @@ function validate_inputs(mood, details, date) {
 }
 
 function isValidDateFormat(dateString) {
-
     const regex = /^\d{4}\-\d{2}\-\d{2}$/;
 
     if (!regex.test(dateString)) {
@@ -66,15 +48,6 @@ function isValidDateFormat(dateString) {
         date.getMonth() === month - 1 &&
         date.getDate() === day
     );
-}
-
-
-function getInputs() {
-    const mood = document.getElementById('mood').value;
-    const details = document.getElementById('details').value;
-    const date = document.getElementById('date').value;
-
-    return { mood, details, date }
 }
 
 function displayErrors(mood, details, date) {
@@ -102,9 +75,7 @@ function displayErrors(mood, details, date) {
     document.getElementById('error-container').classList.remove("w3-hide");
 }
 
-
 function saveMood(mood, details, date) {
-
     let xhr = new XMLHttpRequest();
     xhr.onerror = () => {
         let errorContainer = document.getElementById('error-container');
@@ -119,8 +90,8 @@ function saveMood(mood, details, date) {
     xhr.onload = () => {
         let response = parseJsonHelper(xhr.responseText);
         if (xhr.status == 200) {
-            loadMoods()
-            resetForm()
+            loadMoods();
+            resetForm();
         } else {
             let output = document.getElementById('error-container');
             document.getElementById('error-container').classList.remove("w3-hide");
@@ -129,20 +100,11 @@ function saveMood(mood, details, date) {
     };
 
     const body = { mood, details, date };
-
     let json = JSON.stringify(body);
 
     xhr.open('POST', 'backend.php', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(json);
-}
-
-function parseJsonHelper(text) {
-    try {
-        return JSON.parse(text);
-    } catch (e) {
-        return null;
-    }
 }
 
 function loadMoods() {
@@ -161,7 +123,7 @@ function loadMoods() {
         let response = parseJsonHelper(xhr.responseText);
         if (xhr.status == 200) {
             let outputContainer = document.getElementById('output');
-            outputContainer.innerHTML = ""; 
+            outputContainer.innerHTML = "";
 
             response.moods.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -193,15 +155,10 @@ function loadMoods() {
         }
     };
 
-    const body = { mood, details, date };
-
-    let json = JSON.stringify(body);
-
     xhr.open('GET', 'backend.php', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(json);
+    xhr.send();
 }
-
 
 function filterMoods(category) {
     let xhr = new XMLHttpRequest();
@@ -212,7 +169,7 @@ function filterMoods(category) {
     };
     xhr.onload = () => {
         let outputContainer = document.getElementById('output');
-        outputContainer.innerHTML = ""; 
+        outputContainer.innerHTML = "";
 
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
@@ -269,4 +226,36 @@ function resetForm() {
     const errorContainer = document.getElementById('error-container');
     errorContainer.classList.add("w3-hide");
     errorContainer.innerHTML = "";
+}
+
+document.getElementById('moodForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const mood_object = getInputs();
+    const mood = mood_object.mood;
+    const details = mood_object.details;
+    const date = mood_object.date;
+    document.getElementById('error-container').classList.add("w3-hide");
+
+    if (validate_inputs(mood, details, date)) {
+        saveMood(mood, details, date);
+    } else {
+        displayErrors(mood, details, date);
+    }
+});
+
+document.getElementById('moodForm').addEventListener('input', () => {
+    const mood_object = getInputs();
+    const mood = mood_object.mood;
+    const details = mood_object.details;
+    const date = mood_object.date;
+
+    document.getElementById('submit-button').disabled = !validate_inputs(mood, details, date);
+});
+
+function parseJsonHelper(text) {
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        return null;
+    }
 }

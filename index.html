@@ -11,9 +11,9 @@
 
 <body onload="loadMoods()">
     <div class="w3-bar w3-blue">
-        <a href="#information" class="w3-bar-item w3-button">Information</a>
-        <a href="#form" class="w3-bar-item w3-button">Form</a>
-        <a href="#output" class="w3-bar-item w3-button">Output</a>
+        <a href="#information" class="w3-bar-item w3-button">Home</a>
+        <a href="#form" class="w3-bar-item w3-button">Track your mood</a>
+        <a href="#filters" class="w3-bar-item w3-button">History</a>
     </div>
     <div id="information" class="w3-container w3-padding-16 w3-sand w3-center">
         <img src="img/logo.png" alt="logo" style="width:150px;" class="w3-center">
@@ -60,12 +60,13 @@
             <button id="submit-button" type="submit" class="w3-button w3-khaki">Submit</button>
         </form>
     </div>
-    <div id="filters" class="w3-container w3-padding-16">
-        <button class="w3-button w3-blue" onclick="loadMoods()">All</button>
-        <button class="w3-button w3-blue" onclick="filterMoods('unpleasant_mood')">Unpleasant Moods</button>
-        <button class="w3-button w3-blue" onclick="filterMoods('neutral_mood')">Neutral Moods</button>
-        <button class="w3-button w3-blue" onclick="filterMoods('positive_mood')">Positive Moods</button>
+    <div id="filters" class="w3-container w3-padding-16 w3-center">
+        <button class="w3-button w3-blue w3-margin" onclick="loadMoods()">All</button>
+        <button class="w3-button w3-blue w3-margin" onclick="filterMoods('unpleasant_mood')">Unpleasant Moods</button>
+        <button class="w3-button w3-blue w3-margin" onclick="filterMoods('neutral_mood')">Neutral Moods</button>
+        <button class="w3-button w3-blue w3-margin" onclick="filterMoods('positive_mood')">Positive Moods</button>
     </div>
+    
     <div id="output" class="w3-container w3-padding-16">
     </div>
 

@@ -124,12 +124,11 @@ function saveMood(mood, details, date) {
         } else {
             let output = document.getElementById('error-container');
             document.getElementById('error-container').classList.remove("w3-hide");
-            output.innerText = response.errors;
+            output.innerText = "Could not save mood";
         }
     };
 
     const body = { mood, details, date };
-    console.log(body);
 
     let json = JSON.stringify(body);
 
@@ -188,14 +187,13 @@ function loadMoods() {
             });
 
         } else {
-            let output = document.getElementById('error-container');
+            let errorContainer = document.getElementById('error-container');
             document.getElementById('error-container').classList.remove("w3-hide");
-            output.innerText = response.errors;
+            errorContainer.innerText = "Could not load moods";
         }
     };
 
     const body = { mood, details, date };
-    console.log(body);
 
     let json = JSON.stringify(body);
 

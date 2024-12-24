@@ -1,5 +1,4 @@
 <?php
-
 $unpleasant_moods = [
     "stressed",
     "sad",
@@ -140,16 +139,31 @@ if ($method == 'POST') {
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         $moods = $result->fetch_all(MYSQLI_ASSOC);
+        $conn = getDbConnection();
 
-        echo json_encode([
-            "success" => true,
-            "moods" => $moods
-        ]);
+        $newestStmt = $conn->prepare("SELECT * FROM moods ORDER BY date DESC LIMIT 1");
+        if ($newestStmt->execute()) {
+            $newestResult = $newestStmt->get_result();
+            $newestMood = $newestResult->fetch_assoc();
+            setcookie("currentMoodCategory", $newestMood['mood_category'], time() + (86400 * 30), "/");
+
+            echo json_encode([
+                "success" => true,
+                "moods" => $moods,
+                "currentMoodCategory" => $newestMood['mood_category']
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                "success" => false,
+                "error" => "Failed to retrieve the newest mood"
+            ]);
+        }
     } else {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "error" => "Failed to retrieve moods",
+            "error" => "Failed to retrieve moods"
         ]);
     }
 } else {

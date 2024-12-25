@@ -10,7 +10,7 @@
 </head>
 
 <body onload="fetchMoods()">
-    <div class="w3-bar w3-blue w3-center">
+    <div class="w3-bar w3-cyan w3-center">
         <div class="w3-bar w3-center w3-hide-small">
             <a href="#information" class="w3-bar-item w3-button">Home</a>
             <a href="#form" class="w3-bar-item w3-button">Track your mood</a>
@@ -29,7 +29,11 @@
     <div id="information" class="w3-container w3-padding-16 w3-sand w3-center">
         <img src="img/logo.png" alt="logo" style="width:150px;" class="w3-center">
         <h1 class="w3-center">Mood Tracker</h1>
-        <p>Welcome to Moodtacker blah blah blah</p>
+        <p class="w3-padding w3-padding-left w3-padding-right">
+            Mood Tracker helps you stay in tune with your emotions by logging your daily moods and reflecting on patterns
+            over time. Whether you're experiencing joy, stress, or anything in between, this tool is here to help you
+            understand yourself better and enhance your emotional well-being.
+        </p>
     </div>
     <div id="form" class="w3-container w3-padding-16">
         <h1>Track your mood!</h1>
@@ -75,17 +79,17 @@
     <div id="filters" class="w3-container w3-padding-16 w3-center">
         <div class="w3-row">
             <div class="w3-col s12 m3 w3-margin-bottom w3-border">
-                <button class="w3-button w3-blue w3-block" onclick="fetchMoods()">All</button>
+                <button class="w3-button w3-cyan w3-block" onclick="fetchMoods()">All</button>
             </div>
             <div class="w3-col s12 m3 w3-margin-bottom w3-border">
-                <button class="w3-button w3-blue w3-block" onclick="fetchMoods('unpleasant_mood')">Unpleasant
+                <button class="w3-button w3-cyan w3-block" onclick="fetchMoods('unpleasant_mood')">Unpleasant
                     Moods</button>
             </div>
             <div class="w3-col s12 m3 w3-margin-bottom w3-border">
-                <button class="w3-button w3-blue w3-block" onclick="fetchMoods('neutral_mood')">Neutral Moods</button>
+                <button class="w3-button w3-cyan w3-block" onclick="fetchMoods('neutral_mood')">Neutral Moods</button>
             </div>
             <div class="w3-col s12 m3 w3-margin-bottom w3-border">
-                <button class="w3-button w3-blue w3-block" onclick="fetchMoods('positive_mood')">Positive
+                <button class="w3-button w3-cyan w3-block" onclick="fetchMoods('positive_mood')">Positive
                     Moods</button>
             </div>
         </div>

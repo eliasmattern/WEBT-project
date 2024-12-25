@@ -49,4 +49,3 @@ function drawSmiley(mood) {
     ctx.fillStyle = "black";
     ctx.fill();
 }
-46

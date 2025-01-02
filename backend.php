@@ -24,8 +24,7 @@ $positive_moods = [
     "amazed"
 ];
 
-function getDbConnection()
-{
+function getDbConnection() {
     $conn = mysqli_connect("localhost", "root", "", "MoodTracker");
     if (!$conn) {
         http_response_code(500);
@@ -145,12 +144,23 @@ if ($method == 'POST') {
         if ($newestStmt->execute()) {
             $newestResult = $newestStmt->get_result();
             $newestMood = $newestResult->fetch_assoc();
-            setcookie("currentMoodCategory", $newestMood['mood_category'], time() + (86400 * 30), "/");
+            $currentMood = "";
+            if (isset($newestMood) && isset($newestMood['mood_category'])) {
+                setcookie("currentMoodCategory", $newestMood['mood_category'], time() + (86400 * 30), "/");
+                $currentMood = $newestMood['mood_category'];
+                if ($newestMood['mood_category'] == "unpleasant_mood") {
+                    $currentMood = "unpleasant";
+                } elseif ($newestMood['mood_category'] == "neutral_mood"){
+                    $currentMood = "neutral";
+                } elseif ($newestMood['mood_category'] == "positive_mood"){
+                    $currentMood = "positive";
+                }
+            }
 
             echo json_encode([
                 "success" => true,
                 "moods" => $moods,
-                "currentMoodCategory" => $newestMood['mood_category']
+                "currentMoodCategory" => $currentMood 
             ]);
         } else {
             http_response_code(500);

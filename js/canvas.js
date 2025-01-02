@@ -22,19 +22,19 @@ function drawSmiley(mood) {
     ctx.fill();
 
     // Mouth
-    if (mood == "positive_mood") {
+    if (mood == "positive") {
         ctx.beginPath();
         ctx.arc(150, 150, 60, 0.2 * Math.PI, 0.8 * Math.PI, false);
         ctx.lineWidth = 5;
         ctx.strokeStyle = "black";
         ctx.stroke();
-    } else if (mood == "unpleasant_mood") {
+    } else if (mood == "unpleasant") {
         ctx.beginPath();
         ctx.arc(150, 220, 30, 0, Math.PI, true);
         ctx.lineWidth = 5;
         ctx.strokeStyle = "black";
         ctx.stroke();
-    } else if (mood == "neutral_mood") {
+    } else if (mood == "neutral") {
         ctx.beginPath();
         ctx.moveTo(110, 190);
         ctx.lineTo(190, 190);

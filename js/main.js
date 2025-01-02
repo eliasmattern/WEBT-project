@@ -100,6 +100,8 @@ function fetchMoods(category = 'all') {
                 });
                 if (response.currentMoodCategory) {
                     drawSmiley(response.currentMoodCategory);
+                    
+                    document.getElementById("currentMood").innerHTML = "Your Current Mood: " + response.currentMoodCategory;
                 }
             } 
         } else {

@@ -23,7 +23,7 @@ function isValidDateFormat(dateString) {
     return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
 }
 
-function displayErrors({ mood, details, date }) {
+function displayErrors(mood, details, date) {
     const errors = [
         !valid_moods.includes(mood) ? `<p>${mood} is not a valid mood.</p>` : '',
         typeof details !== 'string' || details.length > 500 ? "<p>Details must be text and less than 500 characters.</p>" : '',
@@ -95,7 +95,7 @@ function fetchMoods(category = 'all') {
                     moodEntry.innerHTML = `
                         <h3>Mood: ${item.mood}</h3>
                         <p><strong>Date:</strong> ${formatDate(item.date)}</p>
-                        <p><strong>Details:</strong> ${item.details}</p>`;
+                        ${item.details? `<p><strong>Details:</strong> ${item.details}</p>`: ''}`;
                     outputContainer.appendChild(moodEntry);
                 });
                 if (response.currentMoodCategory) {

@@ -27,12 +27,13 @@
     </div>
 
     <div id="information" class="w3-container w3-padding-16 w3-sand w3-center">
-        <img src="img/logo.png" alt="logo" style="width:150px;" class="w3-center">
+        <img src="img/logo.png" alt="logo" class="w3-center logo">
         <h1 class="w3-center">Mood Tracker</h1>
         <p class="w3-padding w3-padding-left w3-padding-right">
-            Mood Tracker helps you stay in tune with your emotions by logging your daily moods and reflecting on patterns
-            over time. Whether you're experiencing joy, stress, or anything in between, this tool is here to help you
-            understand yourself better and enhance your emotional well-being.
+            Welcome to Mood Tracker! This platform allows you to log your daily moods, reflect on emotional patterns,
+            and gain deeper insights into your well-being. Use the "Track your mood" section to record how you feel, add
+            details, and save the entry. Explore the "History" section to view and analyze your past mood records. Start
+            tracking today for a better understanding of your emotional journey!
         </p>
     </div>
     <div id="form" class="w3-container w3-padding-16">
@@ -76,6 +77,12 @@
             <button id="submit-button" type="submit" class="w3-button w3-khaki">Submit</button>
         </form>
     </div>
+
+    <h3 class="w3-center" id="currentMood"></h3>
+    <div class="w3-center">
+        <canvas id="smileyCanvas" width="300" height="300"></canvas>
+    </div>
+    <h3 class="w3-center">Your mood history:</h3>
     <div id="filters" class="w3-container w3-padding-16 w3-center">
         <div class="w3-row">
             <div class="w3-col s12 m3 w3-margin-bottom w3-border">
@@ -94,12 +101,6 @@
             </div>
         </div>
     </div>
-
-    <h3 class="w3-center" id="currentMood"></h3>
-    <div class="w3-center">
-        <canvas id="smileyCanvas" width="300" height="300"></canvas>
-    </div>
-
     <div id="output" class="w3-container w3-padding-16">
     </div>
 

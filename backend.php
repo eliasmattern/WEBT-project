@@ -69,7 +69,7 @@ if ($method == 'POST') {
                 $errors .= "Date cannot be in the future.\n";
             }
         }
-
+        $details = trim($details);
         if (!is_string($details)) {
             $errors .= "Details must be a string or empty.\n";
         }

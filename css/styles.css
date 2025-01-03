@@ -35,3 +35,7 @@
 #moodForm button {
     width: fit-content;
 }
+
+.logo {
+    width: 150px;
+}
